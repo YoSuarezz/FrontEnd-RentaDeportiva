@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
- 
 const Navbar = ({ onLoginClick, onNavigate }) => {
   return (
     <nav className="navbar">
@@ -39,5 +38,4 @@ const Navbar = ({ onLoginClick, onNavigate }) => {
     </nav>
   );
 };
- 
 export default Navbar;

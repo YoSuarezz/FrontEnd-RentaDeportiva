@@ -133,3 +133,65 @@ text-decoration: underline;
   margin-right: 30px;
   margin-top: 15px;
 }
+
+.titulo_crearespacio {
+  text-align: center;
+  color: green;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.formulario-crear-espacio {
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid green;
+  border-radius: 10px;
+  background-color: #f8f8f8;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.titulo_crearespacio {
+  color: green;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+select {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.button-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.boton-guardar {
+  background-color: green;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.boton-guardar:hover {
+  background-color: #007700; /* Color más oscuro al pasar el cursor */
+}
