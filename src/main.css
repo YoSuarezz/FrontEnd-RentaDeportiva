@@ -1,106 +1,135 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
 }
 
 .navbar {
-    padding: 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: green;
-    border-bottom: 3px solid black;
-    background-image: url('imagenes/banner.jpg');
-    background-size: 130px;
-    height: 100px; 
-    background-repeat: no-repeat;
-    background-position: center;
-    font-weight: bold;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: green;
+  border-bottom: 3px solid black;
+  background-image: url('imagenes/banner.jpg');
+  background-size: 130px;
+  height: 100px;
+  background-repeat: no-repeat;
+  background-position: center;
+  font-weight: bold;
 }
 
 .logo {
-    color:rgb(255, 255, 255);
+  color:rgb(255, 255, 255);
+  text-decoration: none;
+}
+
+.logo:hover {
+text-decoration: underline;
 }
 
 .menu {
-    list-style-type: none;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .menu-link {
-    text-decoration: none;
-    color: rgb(255, 255, 255);
-    font-size: 1rem;
-    cursor: pointer;
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+  font-size: 1rem;
+  cursor: pointer;
 }
 
 .menu-link:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .login-button {
-    background-color: #fdfdfd;
-    color: green;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-weight: bold;
+  background-color: #fdfdfd;
+  color: green;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .container {
-    width: 300px;
-    margin: auto;
-    margin-top: 100px;
-    padding: 20px;
-    border: 1px solid green;
-    border-radius: 5px;
-    background-color: #44da5898;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .inputContainer {
-    margin-bottom: 15px;
-    text-align: left;
-  }
-  
-  .input {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    font-size: 16px;
-  }
-  
-  .checkboxContainer {
-    margin-bottom: 15px;
-    text-align: left;
-    display: flex;
-    align-items: center;
-  }
-  
-  .button {
-    width: 100%;
-    padding: 10px;
-    background-color: green;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .forgotPassword {
-    margin-top: 10px;
-  }
-  
-  .forgotPassword a {
-    color: green;
-    text-decoration: none;
-    font-size: 15px;
-  }
+  width: 300px;
+  margin: auto;
+  margin-top: 100px;
+  padding: 20px;
+  border: 1px solid green;
+  border-radius: 5px;
+  background-color: #44da5898;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.inputContainer {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 16px;
+}
+
+.checkboxContainer {
+  margin-bottom: 15px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+}
+
+.button {
+  width: 100%;
+  padding: 10px;
+  background-color: green;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.forgotPassword {
+  margin-top: 10px;
+}
+
+.forgotPassword a {
+  color: green;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.espacio_banner {
+  color: green;
+  text-align: center;
+}
+
+.contenedor-botones {
+  display: flex;
+  justify-content: center;
+}
+
+.botones_espacios {
+  text-align: center;
+  padding: 10px;
+  background-color: green;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-right: 30px;
+  margin-top: 15px;
+}
