@@ -24,9 +24,9 @@ const CrearEspacio = () => {
             return;
         }
 
-        // Validar formato y contenido de espacio y nombre (solo caracteres permitidos)
-        if (!/^[a-zA-Z\s]+$/.test(espacio)) {
-            setError('El espacio solo puede contener letras y espacios.');
+        // Validar formato y contenido de nombre (solo caracteres permitidos)
+        if (!/^[a-zA-Z\s]+$/.test(nombre)) {
+            setError('El nombre solo puede contener letras y espacios.');
             return;
         }
 
@@ -47,6 +47,32 @@ const CrearEspacio = () => {
         setInventario('');
         setNombre('');
         setError('');
+    };
+
+    const obtenerOpcionesEspacio = () => {
+        switch (deporte) {
+            case 'futbol':
+                return [
+                    { value: 'Cancha', label: 'Cancha' },
+                    { value: 'Campo', label: 'Campo' }
+                ];
+            case 'tenis':
+                return [
+                    { value: 'Campo', label: 'Campo' },
+                    { value: 'Mesa', label: 'Mesa' }
+                ];
+            case 'voleibol':
+                return [
+                    { value: 'Cancha', label: 'Cancha' },
+                    { value: 'Campo', label: 'Campo' }
+                ];
+            case 'natacion':
+                return [
+                    { value: 'Piscina', label: 'Piscina' }
+                ];
+            default:
+                return [];
+        }
     };
 
     return (
@@ -73,7 +99,12 @@ const CrearEspacio = () => {
                     </div>
                     <div className="form-group">
                         <label htmlFor="espacio">Espacio Deportivo:</label>
-                        <input type="text" id="espacio" value={espacio} onChange={(e) => setEspacio(e.target.value)} />
+                        <select id="espacio" value={espacio} onChange={(e) => setEspacio(e.target.value)}>
+                            <option value="">Selecciona un espacio</option>
+                            {obtenerOpcionesEspacio().map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>{opcion.label}</option>
+                            ))}
+                        </select>
                     </div>
                     <div className="form-group">
                         <label htmlFor="inventario">Cantidad de Espacios:</label>
@@ -83,7 +114,7 @@ const CrearEspacio = () => {
                                 id="inventario"
                                 value={inventario}
                                 onChange={(e) => setInventario(e.target.value)}
-                                className="input-inventario"/>
+                                className="input-inventario" />
                         </div>
                     </div>
                     <div className="form-group">

@@ -35,6 +35,13 @@ const handleMostrarConsultarEspacio = () => {
     setMostrarConsultarEspacio(true);
 };
 
+const handleReturnToSpaces = () => {
+    setMostrarCrearEspacio(false);
+    setMostrarEditarEspacio(false);
+    setMostrarEliminarEspacio(false);
+    setMostrarConsultarEspacio(false);
+};
+
 return (
     <div>
     <h2 className='espacio_banner'>Espacios</h2>

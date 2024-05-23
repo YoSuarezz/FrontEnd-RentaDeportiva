@@ -6,6 +6,7 @@ import Espacios from './components/Espacios';
 import './main.css';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginBox, setShowLoginBox] = useState(false);
   const [currentPage, setCurrentPage] = useState('home');
 
@@ -20,15 +21,20 @@ function App() {
     setShowLoginBox(!showLoginBox); 
   };
 
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    setShowLoginBox(false);
+  };
+
   return (
     <Router>
       <div>
-        <Navbar onLoginClick={handleLoginButtonClick} onNavigate={handleNavigation} />
+        <Navbar onLoginClick={handleLoginButtonClick} onNavigate={handleNavigation} isLoggedIn={isLoggedIn} />
         <Routes>
           <Route path="/espacios" element={<Espacios />} />
           {/* Definir otras rutas según la lógica de tu aplicación */}
         </Routes>
-        {showLoginBox && <LoginBox />}
+        {showLoginBox && <LoginBox onLogin={handleLogin} />}
       </div>
     </Router>
   );

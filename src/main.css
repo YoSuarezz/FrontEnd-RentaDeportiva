@@ -232,3 +232,8 @@ select {
   margin-left: 8px;
   font-size: 16px;
 }
+
+.error {
+  color: red;
+  margin-bottom: 15px;
+}
