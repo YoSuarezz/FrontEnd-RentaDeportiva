@@ -1,42 +1,42 @@
 import React, { useState } from 'react';
-import CrearEspacio from './CrearEspacio';
+import CrearDeportista from './CrearDeportista';
 
 const Espacios = () => {
-const [mostrarCrearEspacio, setMostrarCrearEspacio] = useState(false);
+const [mostrarCrearDeportista, setMostrarCrearDeportista] = useState(false);
 const [mostrarEditarEspacio, setMostrarEditarEspacio] = useState(false);
 const [mostrarEliminarEspacio, setMostrarEliminarEspacio] = useState(false);
 const [mostrarConsultarEspacio, setMostrarConsultarEspacio] = useState(false);
 
-const handleMostrarCrearEspacio = () => {
-    setMostrarCrearEspacio(true);
+const handleMostrarCrearDeportista = () => {
+    setMostrarCrearDeportista(true);
     setMostrarEditarEspacio(false);
     setMostrarEliminarEspacio(false);
     setMostrarConsultarEspacio(false);
 };
 
 const handleMostrarEditarEspacio = () => {
-    setMostrarCrearEspacio(false);
+    setMostrarCrearDeportista(false);
     setMostrarEditarEspacio(true);
     setMostrarEliminarEspacio(false);
     setMostrarConsultarEspacio(false);
 };
 
 const handleMostrarEliminarEspacio = () => {
-    setMostrarCrearEspacio(false);
+    setMostrarCrearDeportista(false);
     setMostrarEditarEspacio(false);
     setMostrarEliminarEspacio(true);
     setMostrarConsultarEspacio(false);
 };
 
 const handleMostrarConsultarEspacio = () => {
-    setMostrarCrearEspacio(false);
+    setMostrarCrearDeportista(false);
     setMostrarEditarEspacio(false);
     setMostrarEliminarEspacio(false);
     setMostrarConsultarEspacio(true);
 };
 
 const handleReturnToSpaces = () => {
-    setMostrarCrearEspacio(false);
+    setMostrarCrearDeportista(false);
     setMostrarEditarEspacio(false);
     setMostrarEliminarEspacio(false);
     setMostrarConsultarEspacio(false);
@@ -44,23 +44,23 @@ const handleReturnToSpaces = () => {
 
 return (
     <div>
-    <h2 className='espacio_banner'>Espacios</h2>
+    <h2 className='deportista_banner'>Deportistas</h2>
     <div className="contenedor-botones">
-        {mostrarCrearEspacio ? (
-        <CrearEspacio onClose={() => setMostrarCrearEspacio(false)} />
+        {mostrarCrearDeportista ? (
+        <CrearDeportista onClose={() => setMostrarCrearDeportista(false)} />
         ) : (
         <>
-            <button onClick={handleMostrarCrearEspacio} className="botones_espacios">
-            Crear Espacio
+            <button onClick={handleMostrarCrearDeportista} className="botones_espacios">
+            Crear Deportista
             </button>
             <button onClick={handleMostrarEditarEspacio} className="botones_espacios">
-            Editar Espacio
+            Editar Deportista
             </button>
             <button onClick={handleMostrarEliminarEspacio} className="botones_espacios">
-            Eliminar Espacio
+            Eliminar Deportista
             </button>
             <button onClick={handleMostrarConsultarEspacio} className="botones_espacios">
-            Consultar Espacio
+            Consultar Deportista
             </button>
         </>
         )}
