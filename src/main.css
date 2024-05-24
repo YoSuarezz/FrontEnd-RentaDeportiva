@@ -110,7 +110,7 @@ text-decoration: underline;
   font-size: 15px;
 }
 
-.deportista_banner {
+.espacio_banner {
   color: green;
   text-align: center;
 }
@@ -134,14 +134,14 @@ text-decoration: underline;
   margin-top: 15px;
 }
 
-.titulo_creardeportista {
+.titulo_crearespacio {
   text-align: center;
   color: green;
   margin-top: 15px;
   margin-bottom: 15px;
 }
 
-.formulario-crear-deportista {
+.formulario-crear-espacio {
   width: 100%;
   max-width: 400px;
   margin: 20px auto;
@@ -152,11 +152,10 @@ text-decoration: underline;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.titulo_crear_deportista {
+.titulo_crearespacio {
   color: green;
   margin-top: 0;
   margin-bottom: 20px;
-  text-align: center;
 }
 
 .form-group {
@@ -216,13 +215,9 @@ select {
   margin-top: 10px;
 }
 
-.input-wrapper input {
-  flex: 1; /* Ocupa el espacio disponible */
-  padding: 10px; /* Espacio interno */
-  margin-right: 10px; /* Espacio entre el input y el botón */
-  border: 1px solid #ccc; /* Borde del input */
-  border-radius: 3px; /* Bordes redondeados */
-  font-size: 16px; /* Tamaño de la fuente */
+.input-wrapper {
+  display: flex;
+  align-items: center;
 }
 
 .input-inventario {

@@ -5,7 +5,7 @@ const Navbar = ({ onLoginClick, onNavigate, isLoggedIn }) => {
   return (
     <nav className="navbar">
       <Link to="/" className="logo" onClick={() => onNavigate('home')}>
-        <h1>Aventura Deportiva</h1>
+        <h1>Unidad Deportiva El Bernabeu</h1>
       </Link>
       <link
         rel="stylesheet"
@@ -21,17 +21,17 @@ const Navbar = ({ onLoginClick, onNavigate, isLoggedIn }) => {
             </li>
             <li>
               <Link to="/espacios" className="menu-link">
-                Deportistas
+                Espacios
               </Link>
             </li>
             <li>
               <a className="menu-link" href="#">
-                Noticias Y Notificaciones
+                Reservar
               </a>
             </li>
             <li>
               <a className="menu-link" href="#">
-                Calendario
+                Contacto
               </a>
             </li>
           </>
