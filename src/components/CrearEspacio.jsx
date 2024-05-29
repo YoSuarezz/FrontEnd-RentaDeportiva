@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 
 const CrearEspacio = () => {
     const [deporte, setDeporte] = useState('');
@@ -8,8 +7,6 @@ const CrearEspacio = () => {
     const [nombre, setNombre] = useState('');
     const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
     const [error, setError] = useState('');
-
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -23,21 +20,21 @@ const CrearEspacio = () => {
         // Validar formato y longitud de inventario
         const inventarioNumber = parseInt(inventario);
 
-        if (isNaN(inventarioNumber) || Number.isInteger(inventarioNumber) || inventarioNumber <= 0 || inventarioNumber > 99) {
-            setError('La cantidad de espacios debe ser un número entero positivo y no mayor a 99');
+        if (isNaN(inventarioNumber) || inventarioNumber < 1 || inventarioNumber > 49) {
+            setError('La cantidad de espacios debe ser un número entre 1 y 49.');
             return;
         }
-        
 
-        
+        // Validar formato y contenido de nombre (mínimo de caracteres y no solo espacios)
+        if (nombre.trim().length < 4) {
+            setError('El nombre debe tener al menos 3 caracteres y no puede ser solo espacios.');
+            return;
+        }
 
-        // Validar formato y contenido de nombre (solo caracteres permitidos)
         if (!/^[a-zA-Z\s]+$/.test(nombre)) {
             setError('El nombre solo puede contener letras y espacios.');
             return;
         }
-
-        
 
         // Crear objeto con los datos del espacio
         const datosEspacio = {
@@ -90,7 +87,7 @@ const CrearEspacio = () => {
                 <div className="mensaje-confirmacion">
                     <p>¡La creación del espacio deportivo fue exitosa!</p>
                     <p>Se han creado {mostrarConfirmacion.inventario} {mostrarConfirmacion.espacio}(s) de {mostrarConfirmacion.nombre}</p>
-                    <button className="button" onClick={() => setMostrarConfirmacion(false)}>Regresar a Espacios</button>
+                    <button className="button" onClick={() => setMostrarConfirmacion(false)}>Regresar a la Creacion De Espacios</button>
                 </div>
             ) : (
                 <form onSubmit={handleSubmit}>
