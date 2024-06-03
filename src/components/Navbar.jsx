@@ -26,12 +26,17 @@ const Navbar = ({ onLoginClick, onNavigate, isLoggedIn }) => {
             </li>
             <li>
               <a className="menu-link" href="#">
-                Reservar
+                Tarifas
               </a>
             </li>
             <li>
               <a className="menu-link" href="#">
-                Contacto
+                Clientes
+              </a>
+            </li>
+            <li>
+              <a className="menu-link" href="#">
+                Agendas
               </a>
             </li>
           </>

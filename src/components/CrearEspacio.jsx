@@ -1,33 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const CrearEspacio = () => {
     const [deporte, setDeporte] = useState('');
+    const [deportes, setDeportes] = useState([]);
     const [espacio, setEspacio] = useState('');
     const [inventario, setInventario] = useState('');
     const [nombre, setNombre] = useState('');
     const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
     const [error, setError] = useState('');
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const espaciosPorDeporte = {
+        'fútbol': ['Cancha', 'Estadio'],
+        'tenis': ['Cancha cubierta', 'Cancha al aire libre'],
+        'natación': ['Piscina olímpica', 'Piscina recreativa'],
+        'voleibol': ['Cancha de arena', 'Cancha interior']
+    };
 
-        // Validar que ninguna casilla esté vacía
+    useEffect(() => {
+        const fetchDeportes = async () => {
+            try {
+                const response = await axios.get('http://localhost:9090/api/v1/deportes');
+                setDeportes(response.data.datos);
+                console.log("Deportes cargados:", response.data.datos);
+            } catch (error) {
+                setError('Error al cargar los deportes');
+                console.error('Error fetching deportes:', error);
+            }
+        };
+        fetchDeportes();
+    }, []);
+
+    const handleDeporteChange = (event) => {
+        const deporteId = event.target.value;
+        const deporteSeleccionado = deportes.find(dep => dep.id.toString() === deporteId);
+        setDeporte(deporteSeleccionado || {});
+    };
+
+    const obtenerOpcionesEspacio = () => {
+        if (deporte && deporte.nombre) {
+            return espaciosPorDeporte[deporte.nombre.toLowerCase()] || [];
+        }
+        return [];
+    };
+
+    const registrarEspacio = async (datosEspacio) => {
+        try {
+            const response = await axios.post('http://localhost:9090/api/v1/tipos-espacios-deportivos', datosEspacio, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log('Registro exitoso:', response.data);
+            setMostrarConfirmacion({
+                inventario: datosEspacio.cantidad,
+                espacio: datosEspacio.espacio,
+                nombre: datosEspacio.nombre
+            });
+            setError('');
+        } catch (error) {
+            console.error('Error al registrar el espacio:', error);
+            setError('Error al registrar el espacio: ' + (error.response?.data?.message || error.message));
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         if (!deporte || !espacio || !inventario || !nombre) {
             setError('Por favor completa todos los campos.');
             return;
         }
 
-        // Validar formato y longitud de inventario
-        const inventarioNumber = parseInt(inventario);
-
-        if (isNaN(inventarioNumber) || inventarioNumber < 1 || inventarioNumber > 49) {
-            setError('La cantidad de espacios debe ser un número entre 1 y 49.');
-            return;
-        }
-
-        // Validar formato y contenido de nombre (mínimo de caracteres y no solo espacios)
-        if (nombre.trim().length < 4) {
-            setError('El nombre debe tener al menos 3 caracteres y no puede ser solo espacios.');
+        const inventarioNum = parseFloat(inventario);
+        if (!Number.isInteger(inventarioNum) || inventarioNum < 1 || inventarioNum > 49) {
+            setError('La cantidad de espacios debe ser un número entero entre 1 y 49.');
             return;
         }
 
@@ -36,49 +82,16 @@ const CrearEspacio = () => {
             return;
         }
 
-        // Crear objeto con los datos del espacio
         const datosEspacio = {
-            deporte,
-            espacio,
-            inventario,
-            nombre
+            id: 0,
+            unidadDeportiva: { id: 1 }, // siempre en la misma unidad deportiva
+            deporte: { id: deporte.id },
+            espacio: espacio,
+            cantidad: inventarioNum,
+            nombre: nombre
         };
 
-        // Mostrar mensaje de confirmación con los datos del espacio creado
-        setMostrarConfirmacion(datosEspacio);
-
-        // Limpiar campos y errores
-        setDeporte('');
-        setEspacio('');
-        setInventario('');
-        setNombre('');
-        setError('');
-    };
-
-    const obtenerOpcionesEspacio = () => {
-        switch (deporte) {
-            case 'futbol':
-                return [
-                    { value: 'Cancha', label: 'Cancha' },
-                    { value: 'Campo', label: 'Campo' }
-                ];
-            case 'tenis':
-                return [
-                    { value: 'Campo', label: 'Campo' },
-                    { value: 'Mesa', label: 'Mesa' }
-                ];
-            case 'voleibol':
-                return [
-                    { value: 'Cancha', label: 'Cancha' },
-                    { value: 'Campo', label: 'Campo' }
-                ];
-            case 'natacion':
-                return [
-                    { value: 'Piscina', label: 'Piscina' }
-                ];
-            default:
-                return [];
-        }
+        await registrarEspacio(datosEspacio);
     };
 
     return (
@@ -87,7 +100,7 @@ const CrearEspacio = () => {
                 <div className="mensaje-confirmacion">
                     <p>¡La creación del espacio deportivo fue exitosa!</p>
                     <p>Se han creado {mostrarConfirmacion.inventario} {mostrarConfirmacion.espacio}(s) de {mostrarConfirmacion.nombre}</p>
-                    <button className="button" onClick={() => setMostrarConfirmacion(false)}>Regresar a la Creacion De Espacios</button>
+                    <button className="button" onClick={() => setMostrarConfirmacion(false)}>Regresar</button>
                 </div>
             ) : (
                 <form onSubmit={handleSubmit}>
@@ -95,37 +108,40 @@ const CrearEspacio = () => {
                     {error && <p className="error">{error}</p>}
                     <div className="form-group">
                         <label htmlFor="deporte">Deporte:</label>
-                        <select id="deporte" value={deporte} onChange={(e) => setDeporte(e.target.value)}>
+                        <select id="deporte" value={deporte.id || ''} onChange={handleDeporteChange}>
                             <option value="">Selecciona un deporte</option>
-                            <option value="futbol">Fútbol</option>
-                            <option value="tenis">Tenis</option>
-                            <option value="natacion">Natación</option>
-                            <option value="voleibol">Voleibol</option>
+                            {deportes.map((dep) => (
+                                <option key={dep.id} value={dep.id}>{dep.nombre}</option>
+                            ))}
                         </select>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="espacio">Espacio Deportivo:</label>
+                        <label htmlFor="espacio">Espacio:</label>
                         <select id="espacio" value={espacio} onChange={(e) => setEspacio(e.target.value)}>
                             <option value="">Selecciona un espacio</option>
-                            {obtenerOpcionesEspacio().map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>{opcion.label}</option>
+                            {obtenerOpcionesEspacio().map((esp, idx) => (
+                                <option key={idx} value={esp}>{esp}</option>
                             ))}
                         </select>
                     </div>
                     <div className="form-group">
                         <label htmlFor="inventario">Cantidad de Espacios:</label>
-                        <div className="input-wrapper">
-                            <input
-                                type="number"
-                                id="inventario"
-                                value={inventario}
-                                onChange={(e) => setInventario(e.target.value)}
-                                className="input-inventario" />
-                        </div>
+                        <input
+                            type="number"
+                            id="inventario"
+                            value={inventario}
+                            onChange={(e) => setInventario(e.target.value)}
+                            className="input-inventario"
+                        />
                     </div>
                     <div className="form-group">
                         <label htmlFor="nombre">Nombre:</label>
-                        <input type="text" id="nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+                        <input
+                            type="text"
+                            id="nombre"
+                            value={nombre}
+                            onChange={(e) => setNombre(e.target.value)}
+                        />
                     </div>
                     <div className="button-container">
                         <button type="submit" className='boton-guardar'>Crear</button>
