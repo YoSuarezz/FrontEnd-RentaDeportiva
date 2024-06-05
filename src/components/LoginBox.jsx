@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const LoginBox = ({ onLogin }) => {
   const [username, setUsername] = useState('');
@@ -6,18 +7,26 @@ const LoginBox = ({ onLogin }) => {
   const [rememberPassword, setRememberPassword] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validar formato de correo electrónico
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(username)) {
-      setError('Por favor ingrese un correo electrónico válido. Por ejemplo: ejemplo@dominio.com');
-      return;
-    }
+    try {
+      // Intentar autenticar al usuario
+      const response = await axios.post('http://localhost:9090/api/v1/usuario-ingreso/validar', {
+        usuario: username,
+        contraseña: password
+      });
 
-    // No hay validación para contraseña
-    onLogin();
+      if (response.data) {
+        onLogin(); // Si todo está correcto, se llama al método de inicio de sesión
+        setError(''); // Limpiar errores anteriores
+      } else {
+        setError('Las credenciales son incorrectas o el usuario no está activo');
+      }
+    } catch (err) {
+      console.error('Error al intentar iniciar sesión', err);
+      setError('Error al conectar con el servidor. Por favor, intente más tarde.');
+    }
   };
 
   return (
@@ -51,16 +60,16 @@ const LoginBox = ({ onLogin }) => {
             id="rememberPassword"
             checked={rememberPassword}
             onChange={(e) => setRememberPassword(e.target.checked)}
-            />
-            <label htmlFor="rememberPassword"> Recordar contraseña.</label>
-          </div>
-            <button type="submit" className="button"><strong>Iniciar Sesión</strong></button>
-            </form>
-          <div className="forgotPassword">
-            <a href="#" className="forgotPasswordLink"><strong>¿Olvidaste tu contraseña?</strong></a>
-          </div>
+          />
+          <label htmlFor="rememberPassword"> Recordar contraseña.</label>
+        </div>
+        <button type="submit" className="button"><strong>Iniciar Sesión</strong></button>
+      </form>
+      <div className="forgotPassword">
+        <a href="#" className="forgotPasswordLink"><strong>¿Olvidaste tu contraseña?</strong></a>
+      </div>
     </div>
-);
+  );
 };
-            
+
 export default LoginBox;
