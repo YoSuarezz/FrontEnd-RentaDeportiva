@@ -198,22 +198,39 @@ select {
 }
 
 .mensaje-confirmacion {
-  background-color: #dff0d8;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-  padding: 10px;
-  margin-top: 20px;
-  border-radius: 5px;
+  background-color: #dff0d8; /* Color de fondo verde claro */
+  color: #155724;           /* Color de texto verde oscuro */
+  border: 1px solid #c3e6cb; /* Borde más claro que el fondo */
+  padding: 20px;             /* Espaciado interno para dar más espacio */
+  margin: 30px auto;         /* Margen superior e inferior y centrado horizontal */
+  border-radius: 5px;        /* Bordes redondeados */
+  width: 80%;                /* Ancho del contenedor del mensaje */
+  max-width: 500px;          /* Ancho máximo para evitar que sea demasiado grande */
+  text-align: center;        /* Alineación del texto al centro */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
 }
 
 .mensaje-confirmacion p {
-  margin: 0;
-  font-weight: bold;
+  margin: 0;                 /* Sin margen adicional para mantener el diseño limpio */
+  font-weight: bold;         /* Texto en negrita para destacar */
 }
 
 .mensaje-confirmacion button {
-  margin-top: 10px;
+  margin-top: 20px;          /* Espacio sobre el botón para separarlo del texto */
+  padding: 10px 20px;        /* Relleno dentro del botón para hacerlo más grande y fácil de hacer clic */
+  background-color: green;   /* Color de fondo verde para el botón, coincidiendo con el tema */
+  color: white;              /* Texto del botón en blanco para contraste */
+  border: none;              /* Sin borde */
+  border-radius: 5px;        /* Bordes redondeados para el botón */
+  cursor: pointer;           /* Cursor tipo puntero para indicar que es clickeable */
+  font-size: 16px;           /* Tamaño de fuente más grande para mejorar la legibilidad */
+  font-weight: bold;         /* Texto en negrita para mayor énfasis */
 }
+
+.mensaje-confirmacion button:hover {
+  background-color: #007700; /* Cambio de color al pasar el ratón para indicar interactividad */
+}
+
 
 .input-wrapper {
   display: flex;
