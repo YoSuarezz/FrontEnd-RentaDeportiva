@@ -25,9 +25,9 @@ const Navbar = ({ onLoginClick, onNavigate, isLoggedIn }) => {
               </Link>
             </li>
             <li>
-              <a className="menu-link" href="#">
+              <Link to="/tarifas" className="menu-link">
                 Tarifas
-              </a>
+              </Link>
             </li>
             <li>
               <a className="menu-link" href="#">

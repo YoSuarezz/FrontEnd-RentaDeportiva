@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import LoginBox from './components/LoginBox';
 import Espacios from './components/Espacios';
+import Tarifas from './components/Tarifas';
 import './main.css';
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <Navbar onLoginClick={handleLoginButtonClick} onNavigate={handleNavigation} isLoggedIn={isLoggedIn} />
         <Routes>
           <Route path="/espacios" element={<Espacios />} />
+          <Route path="/tarifas" element={<Tarifas />} />
           {/* Definir otras rutas según la lógica de tu aplicación */}
         </Routes>
         {showLoginBox && <LoginBox onLogin={handleLogin} />}

@@ -13,7 +13,7 @@ const CrearEspacio = ({ onClose }) => {
     const espaciosPorDeporte = {
         'fútbol': ['Cancha', 'Estadio'],
         'tenis': ['Mesa', 'Campo'],
-        'natación': ['Piscina olímpica', 'Piscina recreativa'],
+        'natacion': ['Piscina olímpica', 'Piscina recreativa'],
         'voleibol': ['Cancha de arena', 'Cancha interior']
     };
 
