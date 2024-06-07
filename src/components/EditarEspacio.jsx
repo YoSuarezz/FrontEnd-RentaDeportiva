@@ -15,8 +15,8 @@ const EditarEspacio = ({ onClose }) => {
     const espaciosPorDeporte = {
         'fútbol': ['Cancha', 'Estadio'],
         'tenis': ['Mesa', 'Campo'],
-        'natación': ['Piscina olímpica', 'Piscina recreativa'],
-        'voleibol': ['Cancha de arena', 'Cancha interior']
+        'voleibol': ['Cancha de arena', 'Cancha interior'],
+        'natacion': ['Piscina olímpica', 'Piscina recreativa']
     };
 
     useEffect(() => {
@@ -49,9 +49,9 @@ const EditarEspacio = ({ onClose }) => {
         const espacioSeleccionado = espacios.find(esp => esp.id.toString() === espacioId);
         if (espacioSeleccionado) {
             setEspacioSeleccionado(espacioSeleccionado);
-            setDeporteSeleccionado(espacioSeleccionado.deporte.id);
+            setDeporteSeleccionado(espacioSeleccionado.deporte.id.toString());
             setEspacio(espacioSeleccionado.espacio);
-            setInventario(espacioSeleccionado.cantidad);
+            setInventario(espacioSeleccionado.cantidad.toString());
             setNombre(espacioSeleccionado.nombre);
         }
     };
@@ -59,7 +59,8 @@ const EditarEspacio = ({ onClose }) => {
     const handleDeporteChange = (event) => {
         const deporteId = event.target.value;
         setDeporteSeleccionado(deporteId);
-        setEspacio(''); // Clear espacio selection when deporte changes
+        setEspacio(''); 
+        setEspacioSeleccionado(null);
     };
 
     const obtenerOpcionesEspacio = () => {
