@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const CrearEspacio = ({ onClose }) => {
-    const [deporte, setDeporte] = useState('');
+const EditarEspacio = ({ onClose }) => {
+    const [espacios, setEspacios] = useState([]);
     const [deportes, setDeportes] = useState([]);
+    const [espacioSeleccionado, setEspacioSeleccionado] = useState(null);
+    const [deporteSeleccionado, setDeporteSeleccionado] = useState('');
     const [espacio, setEspacio] = useState('');
     const [inventario, setInventario] = useState('');
     const [nombre, setNombre] = useState('');
-    const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
     const [error, setError] = useState('');
+    const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
 
     const espaciosPorDeporte = {
         'fútbol': ['Cancha', 'Estadio'],
@@ -18,55 +20,59 @@ const CrearEspacio = ({ onClose }) => {
     };
 
     useEffect(() => {
-        const fetchDeportes = async () => {
+        const cargarEspacios = async () => {
             try {
-                const response = await axios.get('http://localhost:9090/api/v1/deportes');
-                setDeportes(response.data.datos);
-                console.log("Deportes cargados:", response.data.datos);
+                const response = await axios.get('http://localhost:9090/api/v1/tipos-espacios-deportivos');
+                setEspacios(response.data.datos || []);
             } catch (error) {
-                setError('Error al cargar los deportes');
-                console.error('Error fetching deportes:', error);
+                setError('Error al cargar los espacios deportivos');
+                console.error('Error al cargar espacios:', error);
             }
         };
-        fetchDeportes();
+
+        const cargarDeportes = async () => {
+            try {
+                const response = await axios.get('http://localhost:9090/api/v1/deportes');
+                setDeportes(response.data.datos || []);
+            } catch (error) {
+                setError('Error al cargar los deportes');
+                console.error('Error al cargar deportes:', error);
+            }
+        };
+
+        cargarEspacios();
+        cargarDeportes();
     }, []);
+
+    const handleEspacioSeleccionado = (event) => {
+        const espacioId = event.target.value;
+        const espacioSeleccionado = espacios.find(esp => esp.id.toString() === espacioId);
+        if (espacioSeleccionado) {
+            setEspacioSeleccionado(espacioSeleccionado);
+            setDeporteSeleccionado(espacioSeleccionado.deporte.id);
+            setEspacio(espacioSeleccionado.espacio);
+            setInventario(espacioSeleccionado.cantidad);
+            setNombre(espacioSeleccionado.nombre);
+        }
+    };
 
     const handleDeporteChange = (event) => {
         const deporteId = event.target.value;
-        const deporteSeleccionado = deportes.find(dep => dep.id.toString() === deporteId);
-        setDeporte(deporteSeleccionado || {});
+        setDeporteSeleccionado(deporteId);
+        setEspacio(''); // Clear espacio selection when deporte changes
     };
 
     const obtenerOpcionesEspacio = () => {
-        if (deporte && deporte.nombre) {
-            return espaciosPorDeporte[deporte.nombre.toLowerCase()] || [];
+        const deporteSeleccionadoObj = deportes.find(dep => dep.id.toString() === deporteSeleccionado);
+        if (deporteSeleccionadoObj) {
+            return espaciosPorDeporte[deporteSeleccionadoObj.nombre.toLowerCase()] || [];
         }
         return [];
     };
 
-    const registrarEspacio = async (datosEspacio) => {
-        try {
-            const response = await axios.post('http://localhost:9090/api/v1/tipos-espacios-deportivos', datosEspacio, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            console.log('Registro exitoso:', response.data);
-            setMostrarConfirmacion({
-                inventario: datosEspacio.cantidad,
-                espacio: datosEspacio.espacio,
-                nombre: datosEspacio.nombre
-            });
-            setError('');
-        } catch (error) {
-            console.error('Error al registrar el espacio:', error);
-            setError('Error al registrar el espacio: ' + (error.response?.data?.message || error.message));
-        }
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!deporte || !espacio || !inventario || !nombre) {
+        if (!espacioSeleccionado || !deporteSeleccionado || !espacio || !inventario || !nombre) {
             setError('Por favor completa todos los campos.');
             return;
         }
@@ -83,32 +89,51 @@ const CrearEspacio = ({ onClose }) => {
         }
 
         const datosEspacio = {
-            id: 0,
-            unidadDeportiva: { id: 1 }, // siempre en la misma unidad deportiva
-            deporte: { id: deporte.id },
+            id: espacioSeleccionado.id,
+            unidadDeportiva: { id: 1 },
+            deporte: { id: deporteSeleccionado },
             espacio: espacio,
             cantidad: inventarioNum,
             nombre: nombre
         };
 
-        await registrarEspacio(datosEspacio);
+        try {
+            const response = await axios.put('http://localhost:9090/api/v1/tipos-espacios-deportivos', datosEspacio, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            setMostrarConfirmacion(true);
+            setError('');
+        } catch (error) {
+            console.error('Error al actualizar el espacio:', error);
+            setError('Error al actualizar el espacio: ' + (error.response?.data?.message || error.message));
+        }
     };
 
     return (
         <div className="formulario-crear-espacio">
             {mostrarConfirmacion ? (
                 <div className="mensaje-confirmacion">
-                    <p>¡La creación del espacio deportivo fue exitosa!</p>
-                    <p>Se han creado {mostrarConfirmacion.inventario} {mostrarConfirmacion.espacio}(s) de {mostrarConfirmacion.nombre}</p>
+                    <p>¡El espacio deportivo fue actualizado exitosamente!</p>
                     <button className="button" onClick={onClose}>Regresar a Espacios</button>
                 </div>
             ) : (
                 <form onSubmit={handleSubmit}>
-                    <h2 className='titulo_crearespacio'>Crear Nuevo Espacio Deportivo</h2>
+                    <h2 className='titulo_crearespacio'>Editar Espacio Deportivo</h2>
                     {error && <p className="error">{error}</p>}
                     <div className="form-group">
+                        <label htmlFor="espacioSeleccionado">Espacio Deportivo:</label>
+                        <select id="espacioSeleccionado" value={espacioSeleccionado?.id || ''} onChange={handleEspacioSeleccionado}>
+                            <option value="">Selecciona un espacio</option>
+                            {espacios.map((esp) => (
+                                <option key={esp.id} value={esp.id}>{esp.nombre}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="form-group">
                         <label htmlFor="deporte">Deporte:</label>
-                        <select id="deporte" value={deporte.id || ''} onChange={handleDeporteChange}>
+                        <select id="deporte" value={deporteSeleccionado} onChange={handleDeporteChange}>
                             <option value="">Selecciona un deporte</option>
                             {deportes.map((dep) => (
                                 <option key={dep.id} value={dep.id}>{dep.nombre}</option>
@@ -144,7 +169,7 @@ const CrearEspacio = ({ onClose }) => {
                         />
                     </div>
                     <div className="button-container">
-                        <button type="submit" className='boton-guardar'>Crear</button>
+                        <button type="submit" className='boton-guardar'>Guardar Cambios</button>
                     </div>
                 </form>
             )}
@@ -152,4 +177,4 @@ const CrearEspacio = ({ onClose }) => {
     );
 };
 
-export default CrearEspacio;
+export default EditarEspacio;

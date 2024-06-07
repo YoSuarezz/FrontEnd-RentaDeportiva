@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import CrearEspacio from './CrearEspacio';
+import EditarEspacio from './EditarEspacio';
 import EliminarEspacio from './EliminarEspacio';
+import ConsultarEspacio from './ConsultarEspacio';
 
 const Espacios = () => {
     const [mostrarCrearEspacio, setMostrarCrearEspacio] = useState(false);
@@ -48,9 +50,9 @@ const Espacios = () => {
             <h2 className='espacio_banner'>Espacios</h2>
             <div className="contenedor-botones">
                 {mostrarCrearEspacio && <CrearEspacio onClose={handleReturnToSpaces} />}
-                {mostrarEditarEspacio && <div>Editar Espacio (Componente aquí)</div>}
+                {mostrarEditarEspacio && <EditarEspacio onClose={handleReturnToSpaces} />}
                 {mostrarEliminarEspacio && <EliminarEspacio onClose={handleReturnToSpaces} />}
-                {mostrarConsultarEspacio && <div>Consultar Espacio (Componente aquí)</div>}
+                {mostrarConsultarEspacio && <ConsultarEspacio onClose={handleReturnToSpaces} />}
                 {!mostrarCrearEspacio && !mostrarEditarEspacio && !mostrarEliminarEspacio && !mostrarConsultarEspacio && (
                     <>
                         <button onClick={handleMostrarCrearEspacio} className="botones_espacios">Crear Espacio</button>
