@@ -5,6 +5,8 @@ const CrearTarifa = ({ onClose }) => {
     const [tipoEspacioDeportivo, setTipoEspacioDeportivo] = useState('');
     const [tipoEspaciosDeportivos, setTipoEspaciosDeportivos] = useState([]);
     const [precioPorHora, setPrecioPorHora] = useState('');
+    const [moneda, setMoneda] = useState('');
+    const [monedas, setMonedas] = useState(['USD', 'EUR', 'COP']);
     const [nombre, setNombre] = useState('');
     const [fechaHoraInicio, setFechaHoraInicio] = useState('');
     const [fechaHoraFin, setFechaHoraFin] = useState('');
@@ -42,7 +44,7 @@ const CrearTarifa = ({ onClose }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!tipoEspacioDeportivo || !precioPorHora || !nombre || !fechaHoraInicio || !fechaHoraFin) {
+        if (!tipoEspacioDeportivo || !precioPorHora || !nombre || !fechaHoraInicio || !fechaHoraFin || !moneda) {
             setError('Por favor completa todos los campos.');
             return;
         }
@@ -77,6 +79,7 @@ const CrearTarifa = ({ onClose }) => {
             id: 0,
             tipoEspacioDeportivo: { id: tipoEspacioDeportivo },
             precioPorHora: precioPorHoraNum,
+            moneda: moneda,
             nombre: nombre,
             fechaHoraInicio: fechaInicioFormateada,
             fechaHoraFin: fechaFinFormateada
@@ -114,6 +117,15 @@ const CrearTarifa = ({ onClose }) => {
                             onChange={(e) => setPrecioPorHora(e.target.value)}
                             className="input"
                         />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="moneda">Moneda:</label>
+                        <select id="moneda" value={moneda} onChange={(e) => setMoneda(e.target.value)}>
+                            <option value="">Selecciona una moneda</option>
+                            {monedas.map((moneda) => (
+                                <option key={moneda} value={moneda}>{moneda}</option>
+                            ))}
+                        </select>
                     </div>
                     <div className="form-group">
                         <label htmlFor="nombre">Nombre:</label>
