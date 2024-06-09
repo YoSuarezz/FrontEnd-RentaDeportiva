@@ -6,7 +6,7 @@ const CrearTarifa = ({ onClose }) => {
     const [tipoEspaciosDeportivos, setTipoEspaciosDeportivos] = useState([]);
     const [precioPorHora, setPrecioPorHora] = useState('');
     const [moneda, setMoneda] = useState('');
-    const [monedas, setMonedas] = useState(['USD', 'EUR', 'COP']);
+    const [monedas] = useState(['USD', 'EUR', 'COP']);
     const [nombre, setNombre] = useState('');
     const [fechaHoraInicio, setFechaHoraInicio] = useState('');
     const [fechaHoraFin, setFechaHoraFin] = useState('');
@@ -38,25 +38,20 @@ const CrearTarifa = ({ onClose }) => {
             setError('');
         } catch (error) {
             console.error('Error al registrar la tarifa:', error);
-            setError('Error al registrar la tarifa: ' + (error.response?.data?.message || error.message));
+            setError(error.response?.data?.mensajes?.join(' ') || error.message);
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!tipoEspacioDeportivo || !precioPorHora || !nombre || !fechaHoraInicio || !fechaHoraFin || !moneda) {
-            setError('Por favor completa todos los campos.');
-            return;
-        }
-
+    
         const precioPorHoraNum = parseFloat(precioPorHora);
-        if (!Number.isInteger(precioPorHoraNum) || precioPorHoraNum <= 0) {
-            setError('El precio por hora debe ser un número entero positivo.');
-            return;
-        }
 
-        if (!/^[a-zA-Z0-9\s]+$/.test(nombre)) {
-            setError('El nombre solo puede contener letras, números y espacios.');
+        const fechaInicio = new Date(fechaHoraInicio);
+        const fechaFin = new Date(fechaHoraFin);
+
+        if (fechaInicio > fechaFin) {
+            setError('La fecha de inicio no puede ser posterior a la fecha de fin.');
             return;
         }
 

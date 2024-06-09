@@ -12,20 +12,26 @@ const LoginBox = ({ onLogin }) => {
 
     try {
       // Intentar autenticar al usuario
-      const response = await axios.post('http://localhost:9090/api/v1/usuario-ingreso/validar', {
+      const response = await axios.post('http://localhost:9090/api/v1/usuarios/autenticar', {
         usuario: username,
-        contraseña: password
+        contrasena: password
       });
 
-      if (response.data) {
+      // Verifica el estado de la respuesta y el contenido de los datos
+      if (response.status === 200 && response.data.datos.length > 0) {
         onLogin(); // Si todo está correcto, se llama al método de inicio de sesión
         setError(''); // Limpiar errores anteriores
       } else {
-        setError('Las credenciales son incorrectas o el usuario no está activo');
+        setError(response.data.mensajes.join(' ')); // Mostrar mensajes de error del backend
       }
     } catch (err) {
-      console.error('Error al intentar iniciar sesión', err);
-      setError('Error al conectar con el servidor. Por favor, intente más tarde.');
+      // Si el servidor responde con un error, mostrar el mensaje del backend
+      if (err.response && err.response.data && err.response.data.mensajes) {
+        setError(err.response.data.mensajes.join(' '));
+      } else {
+        console.error('Error al intentar iniciar sesión', err);
+        setError('Error al conectar con el servidor. Por favor, intente más tarde.');
+      }
     }
   };
 

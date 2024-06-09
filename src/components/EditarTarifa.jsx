@@ -63,19 +63,14 @@ const EditarTarifa = ({ onClose }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!tarifaSeleccionada || !tipoEspacioDeportivo || !precioPorHora || !nombre || !fechaHoraInicio || !fechaHoraFin) {
-            setError('Por favor completa todos los campos.');
-            return;
-        }
 
         const precioPorHoraNum = parseFloat(precioPorHora);
-        if (!Number.isInteger(precioPorHoraNum) || precioPorHoraNum <= 0) {
-            setError('El precio por hora debe ser un número entero positivo.');
-            return;
-        }
 
-        if (!/^[a-zA-Z0-9\s]+$/.test(nombre)) {
-            setError('El nombre solo puede contener letras, números y espacios.');
+        const fechaInicio = new Date(fechaHoraInicio);
+        const fechaFin = new Date(fechaHoraFin);
+
+        if (fechaInicio > fechaFin) {
+            setError('La fecha de inicio no puede ser posterior a la fecha de fin.');
             return;
         }
 
@@ -98,7 +93,7 @@ const EditarTarifa = ({ onClose }) => {
             setError('');
         } catch (error) {
             console.error('Error al actualizar la tarifa:', error);
-            setError('Error al actualizar la tarifa: ' + (error.response?.data?.message || error.message));
+            setError(error.response?.data?.mensajes?.join(' ') || error.message);
         }
     };
 

@@ -73,21 +73,8 @@ const EditarEspacio = ({ onClose }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!espacioSeleccionado || !deporteSeleccionado || !espacio || !inventario || !nombre) {
-            setError('Por favor completa todos los campos.');
-            return;
-        }
-
+        
         const inventarioNum = parseFloat(inventario);
-        if (!Number.isInteger(inventarioNum) || inventarioNum < 1 || inventarioNum > 49) {
-            setError('La cantidad de espacios debe ser un número entero entre 1 y 49.');
-            return;
-        }
-
-        if (!/^[a-zA-Z\s]+$/.test(nombre)) {
-            setError('El nombre solo puede contener letras y espacios.');
-            return;
-        }
 
         const datosEspacio = {
             id: espacioSeleccionado.id,
@@ -99,7 +86,7 @@ const EditarEspacio = ({ onClose }) => {
         };
 
         try {
-            const response = await axios.put('http://localhost:9090/api/v1/tipos-espacios-deportivos', datosEspacio, {
+            await axios.put('http://localhost:9090/api/v1/tipos-espacios-deportivos', datosEspacio, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -108,7 +95,7 @@ const EditarEspacio = ({ onClose }) => {
             setError('');
         } catch (error) {
             console.error('Error al actualizar el espacio:', error);
-            setError('Error al actualizar el espacio: ' + (error.response?.data?.message || error.message));
+            setError(error.response?.data?.mensajes?.join(' ') || error.message);
         }
     };
 
