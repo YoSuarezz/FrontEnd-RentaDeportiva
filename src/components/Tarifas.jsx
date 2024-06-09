@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import CrearTarifa from './CrearTarifa';
+import EditarTarifa from './EditarTarifa';
 // Importar los otros componentes de tarifas cuando los tengas
 
 const Tarifas = () => {
@@ -48,7 +49,8 @@ const Tarifas = () => {
             <h2 className='espacio_banner'>Tarifas</h2>
             <div className="contenedor-botones">
                 {mostrarCrearTarifa && <CrearTarifa onClose={handleReturnToTarifas} />}
-                {/* Aquí puedes añadir los componentes de editar, eliminar y consultar cuando los tengas */}
+                {mostrarEditarTarifa && <EditarTarifa onClose={handleReturnToTarifas} />}
+                {/* Aquí puedes añadir los componentes de eliminar y consultar cuando los tengas */}
                 {!mostrarCrearTarifa && !mostrarEditarTarifa && !mostrarEliminarTarifa && !mostrarConsultarTarifa && (
                     <>
                         <button onClick={handleMostrarCrearTarifa} className="botones_espacios">Crear Tarifa</button>

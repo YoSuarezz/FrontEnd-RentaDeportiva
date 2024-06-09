@@ -282,3 +282,104 @@ select {
   color: #999;
 }
 
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 40px;
+  border: 1px solid green; /* Borde verde */
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.login-container h2 {
+  margin-bottom: 20px;
+  color: green;
+}
+
+.login-form {
+  width: 100%;
+}
+
+.inputContainer {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.inputContainer label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.input:focus {
+  border-color: #007700;
+  outline: none;
+}
+
+.checkboxContainer {
+  margin-bottom: 20px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+}
+
+.checkboxContainer input {
+  margin-right: 8px;
+}
+
+.checkboxContainer label {
+  font-size: 15px;
+  color: #333;
+}
+
+.button {
+  width: 100%;
+  padding: 12px;
+  background-color: green;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #005500;
+}
+
+.forgotPassword {
+  margin-top: 20px;
+}
+
+.forgotPassword button {
+  background: none;
+  border: none;
+  color: green;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.forgotPassword button:hover {
+  text-decoration: underline;
+}
+
+.error {
+  color: red;
+  margin-bottom: 20px;
+  font-size: 14px;
+}

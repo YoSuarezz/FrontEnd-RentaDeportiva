@@ -30,9 +30,9 @@ const LoginBox = ({ onLogin }) => {
   };
 
   return (
-    <div className="container">
+    <div className="login-container">
       <h2>Iniciar Sesión</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="login-form">
         {error && <p className="error">{error}</p>}
         <div className="inputContainer">
           <label htmlFor="username">Correo Electrónico:</label>
@@ -66,7 +66,7 @@ const LoginBox = ({ onLogin }) => {
         <button type="submit" className="button"><strong>Iniciar Sesión</strong></button>
       </form>
       <div className="forgotPassword">
-        <a href="#" className="forgotPasswordLink"><strong>¿Olvidaste tu contraseña?</strong></a>
+        <button className="forgotPasswordLink" onClick={() => alert('Funcionalidad no implementada')}><strong>¿Olvidaste tu contraseña?</strong></button>
       </div>
     </div>
   );
