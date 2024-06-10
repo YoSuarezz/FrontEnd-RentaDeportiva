@@ -6,7 +6,7 @@ const CrearTarifa = ({ onClose }) => {
     const [tipoEspaciosDeportivos, setTipoEspaciosDeportivos] = useState([]);
     const [precioPorHora, setPrecioPorHora] = useState('');
     const [moneda, setMoneda] = useState('');
-    const [monedas] = useState(['USD', 'EUR', 'COP']);
+    const [monedas, setMonedas] = useState([]);
     const [nombre, setNombre] = useState('');
     const [fechaHoraInicio, setFechaHoraInicio] = useState('');
     const [fechaHoraFin, setFechaHoraFin] = useState('');
@@ -23,7 +23,19 @@ const CrearTarifa = ({ onClose }) => {
                 console.error('Error fetching tipos de espacios deportivos:', error);
             }
         };
+
+        const fetchMonedas = async () => {
+            try {
+                const response = await axios.get('http://localhost:9090/api/v1/monedas');
+                setMonedas(response.data.datos || []);
+            } catch (error) {
+                setError('Error al cargar las monedas');
+                console.error('Error fetching monedas:', error);
+            }
+        };
+
         fetchTipoEspaciosDeportivos();
+        fetchMonedas();
     }, []);
 
     const registrarTarifa = async (datosTarifa) => {
@@ -44,7 +56,7 @@ const CrearTarifa = ({ onClose }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         const precioPorHoraNum = parseFloat(precioPorHora);
 
         const fechaInicio = new Date(fechaHoraInicio);
@@ -52,6 +64,11 @@ const CrearTarifa = ({ onClose }) => {
 
         if (fechaInicio > fechaFin) {
             setError('La fecha de inicio no puede ser posterior a la fecha de fin.');
+            return;
+        }
+
+        if (!fechaHoraInicio || !fechaHoraFin) {
+            setError('Las fechas no pueden ser vacías');
             return;
         }
 
@@ -74,7 +91,7 @@ const CrearTarifa = ({ onClose }) => {
             id: 0,
             tipoEspacioDeportivo: { id: tipoEspacioDeportivo },
             precioPorHora: precioPorHoraNum,
-            moneda: moneda,
+            moneda: { id: moneda }, 
             nombre: nombre,
             fechaHoraInicio: fechaInicioFormateada,
             fechaHoraFin: fechaFinFormateada
@@ -118,7 +135,7 @@ const CrearTarifa = ({ onClose }) => {
                         <select id="moneda" value={moneda} onChange={(e) => setMoneda(e.target.value)}>
                             <option value="">Selecciona una moneda</option>
                             {monedas.map((moneda) => (
-                                <option key={moneda} value={moneda}>{moneda}</option>
+                                <option key={moneda.id} value={moneda.id}>{moneda.nombre}</option>
                             ))}
                         </select>
                     </div>

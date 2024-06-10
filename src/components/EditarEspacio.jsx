@@ -49,10 +49,16 @@ const EditarEspacio = ({ onClose }) => {
         const espacioSeleccionado = espacios.find(esp => esp.id.toString() === espacioId);
         if (espacioSeleccionado) {
             setEspacioSeleccionado(espacioSeleccionado);
-            setDeporteSeleccionado(espacioSeleccionado.deporte.id.toString());
-            setEspacio(espacioSeleccionado.espacio);
-            setInventario(espacioSeleccionado.cantidad.toString());
-            setNombre(espacioSeleccionado.nombre);
+            setDeporteSeleccionado(espacioSeleccionado.deporte?.id?.toString() || '');
+            setEspacio(espacioSeleccionado.espacio || '');
+            setInventario(espacioSeleccionado.cantidad?.toString() || '');
+            setNombre(espacioSeleccionado.nombre || '');
+        } else {
+            setEspacioSeleccionado(null);
+            setDeporteSeleccionado('');
+            setEspacio('');
+            setInventario('');
+            setNombre('');
         }
     };
 
@@ -74,6 +80,11 @@ const EditarEspacio = ({ onClose }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
+        if (!espacioSeleccionado) {
+            setError('Por favor seleccione un espacio válido');
+            return;
+        }
+
         const inventarioNum = parseFloat(inventario);
 
         const datosEspacio = {

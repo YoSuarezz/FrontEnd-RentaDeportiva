@@ -4,9 +4,11 @@ import axios from 'axios';
 const EditarTarifa = ({ onClose }) => {
     const [tarifas, setTarifas] = useState([]);
     const [tipoEspaciosDeportivos, setTipoEspaciosDeportivos] = useState([]);
-    const [tarifaSeleccionada, setTarifaSeleccionada] = useState('');
+    const [monedas, setMonedas] = useState([]);
+    const [tarifaSeleccionada, setTarifaSeleccionada] = useState(null);
     const [tipoEspacioDeportivo, setTipoEspacioDeportivo] = useState('');
     const [precioPorHora, setPrecioPorHora] = useState('');
+    const [moneda, setMoneda] = useState('');
     const [nombre, setNombre] = useState('');
     const [fechaHoraInicio, setFechaHoraInicio] = useState('');
     const [fechaHoraFin, setFechaHoraFin] = useState('');
@@ -34,8 +36,19 @@ const EditarTarifa = ({ onClose }) => {
             }
         };
 
+        const cargarMonedas = async () => {
+            try {
+                const response = await axios.get('http://localhost:9090/api/v1/monedas');
+                setMonedas(response.data.datos || []);
+            } catch (error) {
+                setError('Error al cargar las monedas');
+                console.error('Error al cargar monedas:', error);
+            }
+        };
+
         cargarTarifas();
         cargarTipoEspaciosDeportivos();
+        cargarMonedas();
     }, []);
 
     const formatDateTimeLocal = (dateTime) => {
@@ -50,19 +63,33 @@ const EditarTarifa = ({ onClose }) => {
 
     const handleTarifaSeleccionada = (event) => {
         const tarifaId = event.target.value;
-        const tarifaSeleccionada = tarifas.find(tarifa => tarifa.id.toString() === tarifaId);
-        if (tarifaSeleccionada) {
-            setTarifaSeleccionada(tarifaSeleccionada);
-            setTipoEspacioDeportivo(tarifaSeleccionada.tipoEspacioDeportivo.id.toString());
-            setPrecioPorHora(tarifaSeleccionada.precioPorHora.toString());
-            setNombre(tarifaSeleccionada.nombre);
-            setFechaHoraInicio(formatDateTimeLocal(tarifaSeleccionada.fechaHoraInicio));
-            setFechaHoraFin(formatDateTimeLocal(tarifaSeleccionada.fechaHoraFin));
+        const tarifa = tarifas.find(tarifa => tarifa.id.toString() === tarifaId);
+        if (tarifa) {
+            setTarifaSeleccionada(tarifa);
+            setTipoEspacioDeportivo(tarifa.tipoEspacioDeportivo?.id?.toString() || '');
+            setPrecioPorHora(tarifa.precioPorHora?.toString() || '');
+            setMoneda(tarifa.moneda?.id?.toString() || '');
+            setNombre(tarifa.nombre || '');
+            setFechaHoraInicio(formatDateTimeLocal(tarifa.fechaHoraInicio) || '');
+            setFechaHoraFin(formatDateTimeLocal(tarifa.fechaHoraFin) || '');
+        } else {
+            setTarifaSeleccionada(null);
+            setTipoEspacioDeportivo('');
+            setPrecioPorHora('');
+            setMoneda('');
+            setNombre('');
+            setFechaHoraInicio('');
+            setFechaHoraFin('');
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!tarifaSeleccionada) {
+            setError('Por favor seleccione una tarifa válida');
+            return;
+        }
 
         const precioPorHoraNum = parseFloat(precioPorHora);
 
@@ -74,10 +101,16 @@ const EditarTarifa = ({ onClose }) => {
             return;
         }
 
+        if (!fechaHoraInicio || !fechaHoraFin || !tipoEspacioDeportivo || !moneda || !nombre) {
+            setError('Por favor complete todos los campos');
+            return;
+        }
+
         const datosTarifa = {
             id: tarifaSeleccionada.id,
             tipoEspacioDeportivo: { id: tipoEspacioDeportivo },
             precioPorHora: precioPorHoraNum,
+            moneda: { id: moneda },
             nombre: nombre,
             fechaHoraInicio: fechaHoraInicio.replace('T', ' ') + ':00',
             fechaHoraFin: fechaHoraFin.replace('T', ' ') + ':00'
@@ -110,7 +143,7 @@ const EditarTarifa = ({ onClose }) => {
                     {error && <p className="error">{error}</p>}
                     <div className="form-group">
                         <label htmlFor="tarifaSeleccionada">Tarifa:</label>
-                        <select id="tarifaSeleccionada" value={tarifaSeleccionada.id || ''} onChange={handleTarifaSeleccionada}>
+                        <select id="tarifaSeleccionada" value={tarifaSeleccionada ? tarifaSeleccionada.id : ''} onChange={handleTarifaSeleccionada}>
                             <option value="">Selecciona una tarifa</option>
                             {tarifas.map((tarifa) => (
                                 <option key={tarifa.id} value={tarifa.id}>{tarifa.nombre}</option>
@@ -135,6 +168,15 @@ const EditarTarifa = ({ onClose }) => {
                             onChange={(e) => setPrecioPorHora(e.target.value)}
                             className="input"
                         />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="moneda">Moneda:</label>
+                        <select id="moneda" value={moneda} onChange={(e) => setMoneda(e.target.value)}>
+                            <option value="">Selecciona una moneda</option>
+                            {monedas.map((moneda) => (
+                                <option key={moneda.id} value={moneda.id}>{moneda.nombre}</option>
+                            ))}
+                        </select>
                     </div>
                     <div className="form-group">
                         <label htmlFor="nombre">Nombre:</label>
