@@ -87,7 +87,7 @@ const EditarTarifa = ({ onClose }) => {
         e.preventDefault();
 
         if (!tarifaSeleccionada) {
-            setError('Por favor seleccione una tarifa válida');
+            setError('Por favor seleccione una tarifa válida a editar');
             return;
         }
 
@@ -101,7 +101,7 @@ const EditarTarifa = ({ onClose }) => {
             return;
         }
 
-        if (!fechaHoraInicio || !fechaHoraFin || !tipoEspacioDeportivo || !moneda || !nombre) {
+        if (!fechaHoraInicio && !fechaHoraFin && !tipoEspacioDeportivo && !precioPorHora && !moneda ) {
             setError('Por favor complete todos los campos');
             return;
         }
