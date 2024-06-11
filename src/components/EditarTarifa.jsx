@@ -86,11 +86,6 @@ const EditarTarifa = ({ onClose }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!tarifaSeleccionada) {
-            setError('Por favor seleccione una tarifa válida a editar');
-            return;
-        }
-
         const precioPorHoraNum = parseFloat(precioPorHora);
 
         const fechaInicio = new Date(fechaHoraInicio);
@@ -101,20 +96,20 @@ const EditarTarifa = ({ onClose }) => {
             return;
         }
 
-        if (!fechaHoraInicio && !fechaHoraFin && !tipoEspacioDeportivo && !precioPorHora && !moneda ) {
+        if (!tarifaSeleccionada && !tipoEspacioDeportivo && !precioPorHora && !moneda && !nombre && !fechaHoraInicio || !fechaHoraFin) {
             setError('Por favor complete todos los campos');
             return;
         }
 
         const datosTarifa = {
-            id: tarifaSeleccionada.id,
-            tipoEspacioDeportivo: { id: tipoEspacioDeportivo },
+            id: tarifaSeleccionada ? tarifaSeleccionada.id : null,
+            tipoEspacioDeportivo: tipoEspacioDeportivo ? { id: tipoEspacioDeportivo } : null,
             precioPorHora: precioPorHoraNum,
-            moneda: { id: moneda },
+            moneda: moneda ? { id: moneda } : null,
             nombre: nombre,
             fechaHoraInicio: fechaHoraInicio.replace('T', ' ') + ':00',
             fechaHoraFin: fechaHoraFin.replace('T', ' ') + ':00'
-        };
+        };        
 
         try {
             await axios.put('http://localhost:9090/api/v1/tarifasEstandar', datosTarifa, {
